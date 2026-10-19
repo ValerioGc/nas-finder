@@ -1,0 +1,153 @@
+@use './partials/reset';
+@use './partials/variables' as *;
+@use './partials/placeholders' as *;
+@use './partials/mixins' as *;
+
+.icon {
+  @extend %icon_base;
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask: var(--icon_url) center / contain no-repeat;
+  mask: var(--icon_url) center / contain no-repeat;
+}
+
+body {
+  font-family: 'Segoe UI', Inter, system-ui, sans-serif;
+  font-size: $font_body;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  @extend %stack;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  border-radius: $radius_small;
+}
+
+button,
+select {
+  cursor: pointer;
+  @extend %control_transition;
+}
+
+button {
+  color: inherit;
+  background: transparent;
+  border: 0;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+button:not(:disabled):hover {
+  background-color: var(--surface-hover);
+}
+
+input,
+select,
+textarea {
+  color: inherit;
+  background: var(--surface-soft);
+  border: $border_width solid var(--border);
+  padding: $space_2 $space_3;
+  min-height: $control_height;
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.visually_hidden {
+  @extend %visually_hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+.primary_button {
+  @extend %button_base;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+.primary_button:not(:disabled):hover {
+  background: var(--accent);
+  filter: brightness(1.08);
+}
+
+.secondary_button {
+  @extend %button_base;
+  @include surface($radius: null);
+}
+
+.icon_button {
+  @extend %icon_button;
+  padding: 0;
+}
+
+.body_copy {
+  @extend %body_copy;
+}
+
+.hint {
+  @extend %hint;
+}
+
+.empty_state {
+  @extend %centered_stack;
+}
+
+.error_message {
+  padding: $space_3 $space_4;
+  border-radius: $radius_small;
+  background: var(--danger-soft);
+  color: var(--danger);
+  margin-bottom: $space_4;
+}
+
+.spinner {
+  @extend %icon_base;
+  display: inline-block;
+  border: $focus_width solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: $radius_round;
+  animation: finder_spin $duration_slow linear infinite;
+}
+
+@keyframes finder_spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

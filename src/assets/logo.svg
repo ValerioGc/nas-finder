@@ -1,0 +1,27 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="128"
+  height="128"
+  viewBox="0 0 128 128"
+  role="img"
+  aria-labelledby="logo_title"
+>
+  <title id="logo_title">NAS Finder — Network discovery</title>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#258ac0" />
+      <stop offset="1" stop-color="#2259a5" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#background)" />
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M80 78 105 103" stroke-width="10" />
+    <circle cx="55" cy="52" r="34" stroke-width="7" />
+    <path d="M55 41v8H40v7m15-7h15v7" stroke-width="4" />
+  </g>
+  <g fill="#fff">
+    <rect x="49" y="29" width="12" height="12" rx="3" />
+    <rect x="34" y="56" width="12" height="12" rx="3" />
+    <rect x="64" y="56" width="12" height="12" rx="3" />
+  </g>
+</svg>
