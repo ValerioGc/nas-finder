@@ -1,4 +1,5 @@
-import { NodeTypes, type NodeTransform } from '@vue/compiler-core';
+import { NodeTypes } from '@vue/compiler-core';
+import type { CompilerOptions } from 'vue/compiler-sfc';
 import type { Plugin } from 'vite';
 
 export const TEST_ID_ATTRIBUTE = 'data-testid';
@@ -7,7 +8,9 @@ export const TEST_ID_ATTRIBUTE = 'data-testid';
  * Removes data-testid attributes from Vue templates during production builds.
  * Tests and Playwright keep the attributes while running in development.
  */
-export const stripTestIdsNodeTransform: NodeTransform = (node) => {
+export const stripTestIdsNodeTransform: NonNullable<CompilerOptions['nodeTransforms']>[number] = (
+  node,
+) => {
   if (node.type !== NodeTypes.ELEMENT) {
     return;
   }

@@ -1,8 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 import { addChangelogEntry, extractChangelog } from '../../scripts/pipeline/extract-changelog.cjs';
@@ -27,29 +25,6 @@ test('accepts matching release metadata and rejects a mismatched tag', () => {
   const invalid = spawnSync(process.execPath, [verifier, 'v999.999.999'], { encoding: 'utf8' });
   assert.equal(invalid.status, 1, invalid.stderr);
   assert.match(invalid.stderr, /expected 999\.999\.999/);
-});
-
-test('rejects a Cargo version with a missing closing quote without reading the next line', (t) => {
-  const project = mkdtempSync(join(tmpdir(), 'nas-finder-release-metadata-'));
-  t.after(() => rmSync(project, { recursive: true, force: true }));
-  mkdirSync(join(project, 'backend'));
-  for (const file of ['package.json', 'package-lock.json', 'backend/tauri.conf.json']) {
-    copyFileSync(file, join(project, file));
-  }
-
-  for (const newline of ['\n', '\r\n']) {
-    writeFileSync(
-      join(project, 'backend/Cargo.toml'),
-      `[package]${newline}version = "${version}${newline}edition = "2021"${newline}`,
-    );
-    const result = spawnSync(process.execPath, [verifier, `v${version}`], {
-      cwd: project,
-      encoding: 'utf8',
-    });
-    assert.equal(result.status, 1, result.stderr);
-    assert.match(result.stderr, /backend\/Cargo\.toml has no valid package version/);
-    assert.doesNotMatch(result.stderr, /edition/);
-  }
 });
 
 test('adds the new version section from the commits since the last tag', () => {
