@@ -7,9 +7,11 @@ const tag = process.argv[2] ?? `v${JSON.parse(readFileSync('package.json', 'utf8
 const semver = /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/;
 
 function cargoVersion(path) {
-  const match = readFileSync(path, 'utf8').match(/^version\s*=\s*"([^"]+)"/m);
+  const match = readFileSync(path, 'utf8').match(
+    /^[\t ]*version[\t ]*=[\t ]*"([^"\r\n]+)"[\t ]*(?:#[^\r\n]*)?\r?$/m,
+  );
   if (!match) {
-    throw new Error(`\n❌ ${path} has no package version`);
+    throw new Error(`\n❌ ${path} has no valid package version; expected version = "..."`);
   }
 
   return match[1];
