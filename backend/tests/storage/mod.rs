@@ -120,11 +120,23 @@ fn only_rewrites_persistent_changes_and_ignores_runtime_flags_and_order() {
 
 #[test]
 fn excludes_concurrent_file_handles_and_releases_the_lock() {
+    use std::time::{Duration, Instant};
+
     let fixture = Fixture::new();
     let guard = lock(&fixture.path()).unwrap();
     assert!(matches!(lock(&fixture.path()), Err(FinderError::Busy)));
     drop(guard);
-    assert!(lock(&fixture.path()).is_ok());
+    // Concurrent tests can fork and briefly inherit the locked file until exec.
+    let deadline = Instant::now() + Duration::from_secs(1);
+    loop {
+        match lock(&fixture.path()) {
+            Ok(_) => break,
+            Err(FinderError::Busy) if Instant::now() < deadline => {
+                std::thread::sleep(Duration::from_millis(1));
+            }
+            result => panic!("Lock was not released: {result:?}"),
+        }
+    }
 }
 
 #[test]
