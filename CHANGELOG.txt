@@ -1,4 +1,11 @@
 # Changelog
 
+## [0.9.1]
+
+### Fixed
+
+- Remove autofocus from input field.
+- Update slot syntax for consistency.
+
 ## [0.9.0]
 - First release of the NAS Finder application.
