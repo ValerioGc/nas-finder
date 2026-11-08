@@ -58,7 +58,6 @@ function submit() {
           v-model="target"
           inputmode="decimal"
           autocomplete="off"
-          autofocus
           placeholder="192.168.1.10"
           :disabled="busy || blocked"
           aria-describedby="address_hint"
